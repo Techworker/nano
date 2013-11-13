@@ -6,4 +6,4 @@ php:
 before_script:
   - composer install
 
-script: ./ci/travis/phpunit.sh
+script: phpunit -c phpunit/phpunit.xml --coverage-text phpunit/tests
