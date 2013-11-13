@@ -92,6 +92,8 @@ class Nano
         return preg_replace_callback("/\{([\w\.\|%:]*)\}/", $callback, $template);
     }
 
+    public function a() {}
+
     /**
      * Gets the value from the given data array identified by the iven key.
      * To provide deeper structures
