@@ -8,39 +8,39 @@ class NanoTest extends \PHPUnit_Framework_TestCase
 {
     public function testSimple()
     {
-        $template = Nano::tpl("Hello {name}", ['name' => 'techworker']);
+        $template = Nano::tpl("Hello {name}", array('name' => 'techworker'));
         $this->assertEquals("Hello techworker", $template);
     }
 
     public function testSprintf()
     {
-        $template = Nano::tpl("Agent {number|%03d}", ['number' => 7]);
+        $template = Nano::tpl("Agent {number|%03d}", array('number' => 7));
         $this->assertEquals("Agent 007", $template);
 
-        $template = Nano::tpl('${price|%.2f}', ['price' => 122]);
+        $template = Nano::tpl('${price|%.2f}', array('price' => 122));
         $this->assertEquals("$122.00", $template);
     }
 
     public function testDefault()
     {
-        $template = Nano::tpl("Agent {number|%03d}", ['xyz' => 7], "unknown");
+        $template = Nano::tpl("Agent {number|%03d}", array('xyz' => 7), "unknown");
         $this->assertEquals("Agent unknown", $template);
     }
 
     public function testDeep()
     {
-        $data = [
-            'root' => [
-                'level1' => [
+        $data = array(
+            'root' => array(
+                'level1' => array(
                     'name' => 'value'
-                ],
-                'level2' => [
-                    'level3' => [
+                ),
+                'level2' => array(
+                    'level3' => array(
                         'price' => 122
-                    ]
-                ]
-            ]
-        ];
+                    )
+                )
+            )
+        );
         $template = Nano::tpl("{root:level1:name}", $data);
         $this->assertEquals("value", $template);
 
@@ -51,11 +51,11 @@ class NanoTest extends \PHPUnit_Framework_TestCase
     public function testObject()
     {
         $data = new \stdClass();
-        $data->root = [
-            'level1' => [
+        $data->root = array(
+            'level1' => array(
                 'name' => 'value'
-            ]
-        ];
+            )
+        );
 
         $template = Nano::tpl("{root:level1:name}", $data);
         $this->assertEquals("value", $template);
