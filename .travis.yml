@@ -4,6 +4,4 @@ php:
   - 5.4
   - 5.5
 
-# omitting "script:" will default to phpunit
-# use the $DB env variable to determine the phpunit.xml to use
-script: phpunit --configuration phpunit/phpunit.xml phpunit/tests
+script: phpunit --configuration phpunit/phpunit_travis.xml phpunit/tests
