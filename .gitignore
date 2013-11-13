@@ -1,7 +1,6 @@
 .DS_Store
 .idea
 .vagrant
-.*
 cache.properties
 /phpunit/build
 .settings
