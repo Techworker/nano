@@ -7,7 +7,7 @@ Small and fast functionality for key => value oriented sprintf functionality, in
 
 ### About
 
-"!https://travis-ci.org/Techworker/nano.png!":https://travis-ci.org/Techworker/nano
+[![Build Status](https://travis-ci.org/Techworker/nano.png)](https://travis-ci.org/Techworker/nano)
 
 You know what I hate? String concats with $variables for simple messages like Exceptions:
 
