@@ -7,4 +7,4 @@ php:
 before_script:
   - composer install
 
-script: phpunit --configuration phpunit/phpunit_travis.xml phpunit/tests
+script: phpunit --configuration phpunit/phpunit.xml phpunit/tests
