@@ -1,0 +1,10 @@
+.DS_Store
+.idea
+.vagrant
+.*
+cache.properties
+/phpunit/build
+.settings
+/vendor
+composer.lock
+composer.phar
