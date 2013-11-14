@@ -3,11 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Nano by Techworker</title>
+    <title>Techworker\Nano by Techworker</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -15,12 +17,9 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>Nano</h1>
-        <p>Simple, small and fast String templating functionality.</p>
-
+        <h1>Techworker\Nano</h1>
+        <p>A code readability promoting, placeholder oriented, less defective sprintf functionality</p>
         <p class="view"><a href="https://github.com/Techworker/nano">View the Project on GitHub <small>Techworker/nano</small></a></p>
-
-
         <ul>
           <li><a href="https://github.com/Techworker/nano/zipball/master">Download <strong>ZIP File</strong></a></li>
           <li><a href="https://github.com/Techworker/nano/tarball/master">Download <strong>TAR Ball</strong></a></li>
@@ -35,44 +34,198 @@
 <a href="https://scrutinizer-ci.com/g/Techworker/nano/"><img src="https://scrutinizer-ci.com/g/Techworker/nano/badges/quality-score.png?s=b61d7b3ff68cad9ede06c7574177b672458f80a9" alt="Scrutinizer Quality Score"></a>
 <a href="https://scrutinizer-ci.com/g/Techworker/nano/"><img src="https://scrutinizer-ci.com/g/Techworker/nano/badges/coverage.png?s=8f0b002ed08a392d9c7a8ea871edd367825be26a" alt="Code Coverage"></a></p>
 
-<h2>
-<a name="dont-use-at-the-moment-in-push-progress" class="anchor" href="#dont-use-at-the-moment-in-push-progress"><span class="octicon octicon-link"></span></a>DONT USE AT THE MOMENT, IN PUSH PROGRESS...</h2>
-
-<p>Small and fast functionality for key =&gt; value oriented sprintf functionality, inspired by <a href="https://github.com/trix/nano">https://github.com/trix/nano</a>.</p>
+<p>A code readability promoting, placeholder oriented, less defective sprintf functionality, inspired by <a href="https://github.com/trix/nano">https://github.com/trix/nano</a>.
+It is, of course, up to you if you want accept the overhead compared to the PHP core functionality. I use it to format logging messages or Exceptions, which means mostly speed-independant code-parts. Try it out, it is small, well documented and tested.</p>
 
 <h3>
 <a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h3>
 
-<p>You know what I hate? String concats with $variables for simple messages like Exceptions:</p>
+<p>This class tries to avoid manual string concenation by replacing code snippets like the following:</p>
 
-<div class="highlight highlight-php"><pre>    <span class="nv">$message</span> <span class="o">=</span> <span class="s2">"The Parameter "</span> <span class="o">.</span> <span class="nv">$param</span> <span class="o">.</span> <span class="s2">" with value "</span> <span class="o">.</span> <span class="nv">$value</span> <span class="o">.</span> 
-               <span class="s2">" in method "</span> <span class="o">.</span> <span class="nx">__CLASS__</span> <span class="o">.</span> <span class="s2">":"</span> <span class="o">.</span> <span class="nx">__FUNCTION__</span> <span class="o">.</span> 
-               <span class="s2">" was simply wrong."</span><span class="p">;</span>
+<div class="highlight highlight-php"><pre><span class="k">echo</span> <span class="s2">"The Parameter "</span> <span class="o">.</span> <span class="nv">$param</span> <span class="o">.</span> <span class="s2">" with value "</span> <span class="o">.</span> <span class="nv">$value</span> <span class="o">.</span> <span class="s2">" in method "</span> <span class="o">.</span> 
+     <span class="nx">__CLASS__</span> <span class="o">.</span> <span class="s2">":"</span> <span class="o">.</span> <span class="nx">__FUNCTION__</span> <span class="o">.</span> <span class="s2">" was simply wrong."</span><span class="p">;</span>
 </pre></div>
 
-<p>To prevent this type of Coding-Horror I created <code>Techworker\Nano</code>. And to dive in directly, I show you the above code, the Nano way:</p>
+<div class="highlight highlight-php"><pre><span class="k">echo</span> <span class="nb">sprintf</span><span class="p">(</span><span class="s2">"The Parameter %s with value %s in method %s:%s was simply wrong."</span><span class="p">,</span> 
+    <span class="nv">$param</span><span class="p">,</span> <span class="nv">$value</span><span class="p">,</span> <span class="nx">__CLASS__</span><span class="p">,</span> <span class="nx">__METHOD__</span>
+<span class="p">);</span>
+</pre></div>
 
-<div class="highlight highlight-php"><pre>    <span class="nv">$message</span> <span class="o">=</span> <span class="s2">"The Parameter {param} with value {value} in method {class}:{method} was simply wrong"</span><span class="p">;</span>
-    <span class="nv">$message</span> <span class="o">=</span> <span class="nx">\Techworker\Nano</span><span class="o">::</span><span class="na">tpl</span><span class="p">(</span><span class="nv">$message</span><span class="p">,</span> <span class="p">[</span>
-        <span class="s1">'param'</span> <span class="o">=&gt;</span> <span class="nv">$param</span><span class="p">,</span>
-        <span class="s1">'value'</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">,</span>
-        <span class="s1">'method'</span> <span class="o">=&gt;</span> <span class="nx">__METHOD__</span><span class="p">,</span>
-        <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="nx">__CLASS__</span>
-    <span class="p">];</span>
+<p>..with..</p>
+
+<div class="highlight highlight-php"><pre><span class="nv">$message</span> <span class="o">=</span> <span class="s2">"The Parameter {param} with value {value} in method {class}:{method} was simply wrong"</span><span class="p">;</span>
+<span class="k">echo</span> <span class="p">(</span><span class="k">new</span> <span class="nx">Nano</span><span class="p">(</span><span class="nv">$message</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">([</span>
+    <span class="s1">'param'</span> <span class="o">=&gt;</span> <span class="nv">$param</span><span class="p">,</span>
+    <span class="s1">'value'</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">,</span>
+    <span class="s1">'method'</span> <span class="o">=&gt;</span> <span class="nx">__METHOD__</span><span class="p">,</span>
+    <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="nx">__CLASS__</span>
+<span class="p">]);</span>
 </pre></div>
 
 <h3>
-<a name="more-functionality" class="anchor" href="#more-functionality"><span class="octicon octicon-link"></span></a>More functionality</h3>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
 
-<h2>
-<a name="nested" class="anchor" href="#nested"><span class="octicon octicon-link"></span></a>Nested</h2>
+<p>You have multiple ways to use the <code>Techworker\nano</code> class, but at first you have to install it. At best via composerby adding it the require list:</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"require"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"techworker/nano"</span><span class="p">:</span> <span class="s2">"dev-master"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>And installing the package:</p>
+
+<div class="highlight highlight-bash"><pre>composer install
+</pre></div>
+
+<p>After that you are ready to use <code>Techworker\Nano</code>, or you can install the package manually by downloading it (see download links) and installing it manually.</p>
+
+<h3>
+<a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h3>
+
+<p>You have a lot of possibilities to use the <code>Techworker\Nano</code> class. We are going through some examples here but I'd like to invite you to the phpunit\tests directory to see all examples.</p>
+
+<p>Lets start by explaining the replacement:</p>
+
+<ul>
+<li>Each placeholder should be within curly brackets, like <code>{my_placeholder}</code>. </li>
+<li>You can access nested data by defining the access tree with placeholders divided by a colon, eg <code>{my_root_element:level1_element:level2_element}</code>. </li>
+<li>You can assign additional printf and sprintf formatting options, eg <code>{price|%.2f} &amp;euro;</code>
+</li>
+</ul><p>To start, add the following <code>use</code> Statement to your code to access <code>Nano</code> directly or use the complete <code>\Techworker\Nano</code> namespace\class definition:</p>
+
+<div class="highlight highlight-php"><pre>
+<span class="k">echo</span> <span class="nx">Techworker\Nano</span><span class="o">::</span><span class="na">tpl</span><span class="p">(</span><span class="s2">"test"</span><span class="p">);</span>
+
+<span class="k">use</span> <span class="nx">Techworker\Nano</span> <span class="k">as</span> <span class="nx">Nano</span><span class="p">;</span>
+<span class="k">echo</span> <span class="nx">Nano</span><span class="o">::</span><span class="na">tpl</span><span class="p">(</span><span class="s2">"test"</span><span class="p">);</span>
+</pre></div>
+
+<h4>
+<a name="static-call" class="anchor" href="#static-call"><span class="octicon octicon-link"></span></a>Static call</h4>
+
+<p>The simplest and most non-intrusive method:</p>
+
+<div class="highlight highlight-php"><pre><span class="k">echo</span> <span class="nx">Techworker\Nano</span><span class="o">::</span><span class="na">tpl</span><span class="p">(</span><span class="s2">"Agent {number}"</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s2">"number"</span> <span class="o">=&gt;</span> <span class="mi">7</span><span class="p">));</span>
+<span class="c1">// outputs: Agent 7</span>
+</pre></div>
+
+<h4>
+<a name="object-oriented-usage" class="anchor" href="#object-oriented-usage"><span class="octicon octicon-link"></span></a>Object-Oriented usage</h4>
+
+<p>Short and simple, some examples for the usage.</p>
+
+<div class="highlight highlight-php"><pre><span class="k">echo</span> <span class="p">(</span><span class="k">new</span> <span class="nx">Techworker\Nano</span><span class="p">(</span><span class="s2">"Agent {number}"</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">"number"</span> <span class="o">=&gt;</span> <span class="mi">7</span><span class="p">));</span>
+<span class="c1">// outputs: Agent 7</span>
+<span class="k">echo</span> <span class="p">(</span><span class="k">new</span> <span class="nx">Techworker\Nano</span><span class="p">(</span><span class="s2">"Agent {number|%03d}"</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s2">"number"</span> <span class="o">=&gt;</span> <span class="mi">7</span><span class="p">));</span>
+<span class="c1">// outputs: Agent 007</span>
+</pre></div>
+
+<h5>
+<a name="object-getter" class="anchor" href="#object-getter"><span class="octicon octicon-link"></span></a>Object Getter</h5>
+
+<div class="highlight highlight-php"><pre><span class="k">try</span><span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nx">\Exception</span><span class="p">(</span><span class="s2">"Exception Message"</span><span class="p">,</span> <span class="mi">110</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">\Exception</span> <span class="nv">$ex</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="k">new</span> <span class="nx">Techworker\Nano</span><span class="p">(</span><span class="s2">"Exception {message} and {code} thrown"</span><span class="p">,</span> <span class="nv">$ex</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// outputs: Exception Exception Message and 110 thrown</span>
+</pre></div>
+
+<h5>
+<a name="deep-structures" class="anchor" href="#deep-structures"><span class="octicon octicon-link"></span></a>Deep Structures</h5>
+
+<div class="highlight highlight-php"><pre><span class="k">echo</span> <span class="k">new</span> <span class="nx">Techworker\Nano</span><span class="p">(</span><span class="s2">"Hello {name:firstname} {name:lastname}"</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'firstname'</span> <span class="o">=&gt;</span> <span class="s1">'Benjamin'</span><span class="p">,</span>
+        <span class="s1">'lastname'</span> <span class="o">=&gt;</span> <span class="s1">'Ansbach'</span>
+    <span class="p">]</span>
+<span class="p">]);</span>
+<span class="c1">// outputs: Hello Benjamin Ansbach</span>
+</pre></div>
+
+<h5>
+<a name="simple-values" class="anchor" href="#simple-values"><span class="octicon octicon-link"></span></a>Simple values</h5>
+
+<div class="highlight highlight-php"><pre><span class="k">echo</span> <span class="p">(</span><span class="k">new</span> <span class="nx">Techworker\Nano</span><span class="p">())</span><span class="o">-&gt;</span><span class="na">template</span><span class="p">(</span><span class="s2">"Hello {name}"</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">value</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"Benjamin"</span><span class="p">);</span>
+<span class="c1">// outputs: Hello Benjamin</span>
+</pre></div>
+
+<h5>
+<a name="default-values" class="anchor" href="#default-values"><span class="octicon octicon-link"></span></a>Default values</h5>
+
+<div class="highlight highlight-php"><pre><span class="k">echo</span> <span class="p">(</span><span class="k">new</span> <span class="nx">Techworker\Nano</span><span class="p">())</span><span class="o">-&gt;</span><span class="na">template</span><span class="p">(</span><span class="s2">"Hello {name}"</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">default</span><span class="p">(</span><span class="s2">"Stranger"</span><span class="p">);</span>
+<span class="c1">// outputs: Hello Stranger</span>
+</pre></div>
+
+<h5>
+<a name="complex-and-nested" class="anchor" href="#complex-and-nested"><span class="octicon octicon-link"></span></a>Complex and Nested!</h5>
+
+<div class="highlight highlight-php"><pre><span class="c1">// Complex Example</span>
+<span class="nv">$empOfTheMonth</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
+<span class="nv">$empOfTheMonth</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="s1">'Benjamin Ansbach'</span><span class="p">;</span>
+<span class="nv">$empOfTheMonth</span><span class="o">-&gt;</span><span class="na">month</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="nv">$empOfTheMonth</span><span class="o">-&gt;</span><span class="na">year</span> <span class="o">=</span> <span class="mi">2013</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Income</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getAmount</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'company'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'Techworker'</span><span class="p">,</span>
+        <span class="s1">'employees'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'Benjamin Ansbach'</span><span class="p">,</span> <span class="s1">'Techworker'</span><span class="p">],</span>
+        <span class="s1">'income'</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="nx">Income</span><span class="p">(),</span>
+        <span class="s1">'empofmonth'</span> <span class="o">=&gt;</span> <span class="nv">$empOfTheMonth</span>
+    <span class="p">]</span>
+<span class="p">];</span>
+
+<span class="nv">$company</span> <span class="o">=</span> <span class="s">&lt;&lt;&lt;EOT</span>
+<span class="s">Name: {company:name}</span>
+<span class="s">Employees: {company:employees:0} and {company:employees:1}</span>
+<span class="s">Income: {company:income:amount|%.2f}$</span>
+<span class="s">Employee of the Month: {company:empofmonth:name} in {company:empofmonth:year}/{company:empofmonth:month|%02d}</span>
+<span class="s">EOT;</span>
+
+<span class="k">echo</span> <span class="p">(</span><span class="k">new</span> <span class="nx">Techworker\Nano</span><span class="p">(</span><span class="nv">$company</span><span class="p">,</span> <span class="nv">$data</span><span class="p">));</span>
+
+<span class="c1">// outputs:</span>
+<span class="c1">// Name: Techworker</span>
+<span class="c1">// Employees: Benjamin Ansbach and Techworker</span>
+<span class="c1">// Income: 0.00$</span>
+<span class="c1">// Employee of the Month: Benjamin Ansbach in 2013/02</span>
+
+</pre></div>
+
+<h5>
+<a name="instance-reusage-example" class="anchor" href="#instance-reusage-example"><span class="octicon octicon-link"></span></a>Instance Reusage Example</h5>
+
+<div class="highlight highlight-php"><pre><span class="nv">$data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s1">'firstname'</span> <span class="o">=&gt;</span> <span class="s1">'Benjamin'</span><span class="p">,</span> <span class="s1">'lastname'</span> <span class="o">=&gt;</span> <span class="s1">'Ansbach'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'firstname'</span> <span class="o">=&gt;</span> <span class="s1">'The'</span><span class="p">,</span>      <span class="s1">'lastname'</span> <span class="o">=&gt;</span> <span class="s1">'Techworker'</span><span class="p">]</span>
+<span class="p">];</span>
+
+<span class="nv">$nano</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Techworker\Nano</span><span class="p">(</span><span class="s2">"{firstname} {lastname}"</span><span class="p">);</span>
+<span class="k">foreach</span><span class="p">(</span><span class="nv">$data</span> <span class="k">as</span> <span class="nv">$item</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="nv">$nano</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">(</span><span class="nv">$item</span><span class="p">)</span> <span class="o">.</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// outputs</span>
+<span class="c1">// Benjamin Ansbach</span>
+<span class="c1">// The Techworker</span>
+</pre></div>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/Techworker">Techworker</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/Techworker">Techworker</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
     
   </body>
 </html>
