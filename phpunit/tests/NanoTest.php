@@ -6,11 +6,43 @@ use Techworker\Nano as Nano;
 
 class NanoTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSimple()
+
+    public function testStatic()
     {
         $template = Nano::tpl("Hello {name}", array('name' => 'techworker'));
         $this->assertEquals("Hello techworker", $template);
+        $data = array('name' => array(
+            'first' => 'Benjamin',
+            'last' => 'Ansbach')
+        );
+        $template = Nano::tpl("Hello {name:first} {name:last}", $data);
+        $this->assertEquals("Hello Benjamin Ansbach", $template);
     }
+
+    public function testFast()
+    {
+        $template = new Nano("Agent {number|%03d}", array('xyz' => 7), "unknown");
+        $this->assertEquals("Agent unknown", $template);
+    }
+
+    public function testTemplateThenData()
+    {
+        $template = (new Nano("Agent {number|%03d}"))->data(7, 'number');
+        $this->assertEquals("Agent 007", $template);
+
+        $template = (new Nano("Agent {number|%03d}"))->data(array('number' => 7));
+        $this->assertEquals("Agent 007", $template);
+    }
+
+    public function testNothingThenTemplateThenData()
+    {
+        $template = (new Nano())->template("Agent {number|%03d}")->data(7, 'number');
+        $this->assertEquals("Agent 007", $template);
+
+        $template = (new Nano())->template("Agent {number|%03d}")->data(array('number' => 7));
+        $this->assertEquals("Agent 007", $template);
+    }
+
 
     public function testSprintf()
     {
@@ -19,12 +51,6 @@ class NanoTest extends \PHPUnit_Framework_TestCase
 
         $template = Nano::tpl('${price|%.2f}', array('price' => 122));
         $this->assertEquals("$122.00", $template);
-    }
-
-    public function testDefault()
-    {
-        $template = Nano::tpl("Agent {number|%03d}", array('xyz' => 7), "unknown");
-        $this->assertEquals("Agent unknown", $template);
     }
 
     public function testDeep()
