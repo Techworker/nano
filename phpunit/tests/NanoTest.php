@@ -27,8 +27,8 @@ class NanoTest extends \PHPUnit_Framework_TestCase
 
     public function testTemplateThenData()
     {
-        $template = (new Nano("Agent {number|%03d}"))->data(7, 'number');
-        $this->assertEquals("Agent 007", $template);
+        $template = (new Nano("Agent {number|%03d}"))->value('number', 7);
+        $this->assertEquals("Agent 007", (string)$template);
 
         $template = (new Nano("Agent {number|%03d}"))->data(array('number' => 7));
         $this->assertEquals("Agent 007", $template);
@@ -36,7 +36,7 @@ class NanoTest extends \PHPUnit_Framework_TestCase
 
     public function testNothingThenTemplateThenData()
     {
-        $template = (new Nano())->template("Agent {number|%03d}")->data(7, 'number');
+        $template = (new Nano())->template("Agent {number|%03d}")->value('number', 7);
         $this->assertEquals("Agent 007", $template);
 
         $template = (new Nano())->template("Agent {number|%03d}")->data(array('number' => 7));
