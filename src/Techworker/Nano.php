@@ -279,31 +279,42 @@ class Nano
      */
     private function _access($value, $key)
     {
+        switch(gettype($value))
+        {
+            case "array":
+                return $this->_accessArray($value, $key);
+
+            case "object":
+                return $this->_accessObject($value, $key);
+        }
+
+        throw new Exception(self::tpl("Key {key} not found", array('key' => $key)));
+    }
+
+    private function _accessArray($value, $key)
+    {
         if(is_numeric($key)) {
             $key = intval($key);
         }
 
-        switch(gettype($value))
-        {
-            case "array":
-                if(!isset($value[$key])) {
-                    break;
-                }
+        if(isset($value[$key])) {
+            return $value[$key];
+        }
 
-                return $value[$key];
+        throw new Exception(self::tpl("Key {key} not found", array('key' => $key)));
+    }
 
-            case "object":
-                if(method_exists($value, $key)) {
-                    return $value->{$key}();
-                }
-                if(method_exists($value, "get" . $key)) {
-                    return $value->{"get" . $key}();
-                }
+    private function _accessObject($value, $key)
+    {
+        if(method_exists($value, $key)) {
+            return $value->{$key}();
+        }
+        if(method_exists($value, "get" . $key)) {
+            return $value->{"get" . $key}();
+        }
 
-                if(isset($value->{$key})) {
-                    return $value->{$key};
-                }
-                break;
+        if(isset($value->{$key})) {
+            return $value->{$key};
         }
 
         throw new Exception(self::tpl("Key {key} not found", array('key' => $key)));
