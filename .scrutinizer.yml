@@ -2,11 +2,11 @@ filter:
     excluded_paths: [vendor/*, ci/*, phpunit/*]
 
 before_commands:
-    - "composer install --prefer-source --no-dev"
+    - "composer install --prefer-source"
 
 tools:
     php_cpd: true
     php_pdepend:
-        excluded_dirs: [vendor]
+        excluded_dirs: [vendor, ci, phpunit]
     php_code_coverage:
         test_command: phpunit -c phpunit/phpunit.xml
