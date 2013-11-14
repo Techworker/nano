@@ -44,16 +44,15 @@
 namespace Techworker;
 
 /**
- * This is a small helper function which can parse a string with placeholders identified by curly brackets
- * (eg {name}). It does support hierarchies by dividing the placeholders with a dot (eg. {name.firstname}).
+ * A small and flexible sprintf-replacement with better replacement positioning and placeholders.
  *
- * Ported from the original
- * @https://github.com/trix/nano/ Thx!
- *
- * @param string $template The string template to work on.
- * @param array  $data     The data for the replacement process.
- *
- * @return string
+ * @idea       https://github.com/trix/nano/ Thx!
+ * @package    Techworker
+ * @subpackage Radio
+ * @author     Benjamin Ansbach <benjaminansbach@googlemail.com>
+ * @copyright  2013 Benjamin Ansbach <benjaminansbach@googlemail.com>
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+ * @link       http://www.techworker.de/
  */
 class Nano
 {
@@ -73,6 +72,7 @@ class Nano
 
     /**
      * Default replacement value.
+     *
      * @var string
      */
     private $_def = "";
@@ -124,6 +124,25 @@ class Nano
     }
 
     /**
+     * Adds the given key and value to the data array.
+     *
+     * @param string $key The keys to add
+     * @param mixed $value The value to add.
+     * @return $this
+     */
+    public function value($key, $value)
+    {
+        // cleanup
+        if(!is_array($this->_data)) {
+            $this->_data = array();
+        }
+
+        $this->_data[$key] = $value;
+        // fast exit
+        return $this;
+    }
+
+    /**
      * Sets the data for the compile process. You can either send a complete array or object opr you can fill up
      * the database step by step by providing an additional key.
      *
@@ -133,21 +152,8 @@ class Nano
      * @param null|string $key The key under which the value is added.
      * @return $this
      */
-    public function data($value, $key = null)
+    public function data($value)
     {
-        // key given? Append to data array.
-        if(!is_null($key))
-        {
-            // cleanup
-            if(!is_array($this->_data)) {
-                $this->_data = array();
-            }
-
-            $this->_data[$key] = $value;
-            // fast exit
-            return $this;
-        }
-
         // given data is an array, merge with the actual array
         if(is_array($value)) {
             $this->_data = array_merge($this->_data, $value);
@@ -273,6 +279,10 @@ class Nano
      */
     private function _access($value, $key)
     {
+        if(is_numeric($key)) {
+            $key = intval($key);
+        }
+
         switch(gettype($value))
         {
             case "array":
@@ -283,16 +293,21 @@ class Nano
                 return $value[$key];
 
             case "object":
-                if(!isset($value->{$key})) {
-                    break;
+                if(method_exists($value, $key)) {
+                    return $value->{$key}();
+                }
+                if(method_exists($value, "get" . $key)) {
+                    return $value->{"get" . $key}();
                 }
 
-                return $value->{$key};
+                if(isset($value->{$key})) {
+                    return $value->{$key};
+                }
+                break;
         }
 
         throw new Exception(self::tpl("Key {key} not found", array('key' => $key)));
     }
-
 
     /**
      * Gets a unique identifier for the current template + data.

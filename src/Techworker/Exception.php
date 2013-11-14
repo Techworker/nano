@@ -44,10 +44,9 @@
 namespace Techworker;
 
 /**
- * Simple, small and fast String templating functionality ported from the original https://github.com/trix/nano.
+ * Base Exception for the namespace, nothing special to see here.
  *
  * @package    Techworker
- * @see        https://github.com/trix/nano.
  * @subpackage Nano
  * @author     Benjamin Ansbach <benjaminansbach@googlemail.com>
  * @copyright  2013 Benjamin Ansbach <benjaminansbach@googlemail.com>

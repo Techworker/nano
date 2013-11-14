@@ -2,8 +2,12 @@
 
 require_once 'vendor/autoload.php';
 
-use Techworker\Nano as Nano;
-$foo = "bar";
+$data = [
+    ['firstname' => 'Benjamin', 'lastname' => 'Ansbach'],
+    ['firstname' => 'The',      'lastname' => 'Techworker']
+];
 
-echo Nano::tpl("Hello {name.first} {name.last}", $data);
-
+$nano = new Techworker\Nano("{firstname} {lastname}");
+foreach($data as $item) {
+    echo $nano->data($item) . "\n";
+}
