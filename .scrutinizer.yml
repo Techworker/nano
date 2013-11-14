@@ -9,4 +9,4 @@ tools:
     php_pdepend:
         excluded_dirs: [vendor, ci, phpunit]
     php_code_coverage:
-        test_command: phpunit -c phpunit/phpunit.xml
+        test_command: vendor/bin/phpunit -c phpunit/phpunit.xml

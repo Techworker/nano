@@ -54,26 +54,37 @@ namespace Techworker;
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.techworker.de/
  */
-/**
- * This is a small helper function which can parse a string with placeholders identified by curly brackets
- * (eg {name}). It does support hierarchies by dividing the placeholders with a dot (eg. {name.firstname}).
- *
- * Ported from the original
- * @https://github.com/trix/nano/ Thx!
- *
- * @param string $template The string template to work on.
- * @param array  $data     The data for the replacement process.
- *
- * @return string
- */
 class Nano
 {
+    // new implementation
+    /*
+     *
+new Nano("Hallo {name}")->data("name", "Ben")->compile();
+new Nano()->template("Hallo {name}")->data("name", "Ben")->compile();
+new Nano()->template("Hallo {name}")->data("name", "Ben")->compile($data);
+
+     */
+    public function __construct($template = "", $data = array())
+    {
+
+    }
+
+    public function data()
+    {
+
+    }
+
+    public function __toString()
+    {
+        return $this->compile();
+    }
+
     /**
      * Parses the given template and tries to apply the given values (accessible via ArrayAccess)
      * to the placeholders.
      *
      * @param String $template The template to parse and fill.
-     * @param array|stdClass $data The data basis.
+     * @param array|object $data The data basis.
      * @return String
      */
     public static function tpl($template, $data, $default = "")
