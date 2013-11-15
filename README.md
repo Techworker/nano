@@ -4,7 +4,7 @@ nano
 [![Build Status](https://travis-ci.org/Techworker/nano.png)](https://travis-ci.org/Techworker/nano)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/Techworker/nano/badges/quality-score.png?s=b61d7b3ff68cad9ede06c7574177b672458f80a9)](https://scrutinizer-ci.com/g/Techworker/nano/)
 [![Code Coverage](https://scrutinizer-ci.com/g/Techworker/nano/badges/coverage.png?s=8f0b002ed08a392d9c7a8ea871edd367825be26a)](https://scrutinizer-ci.com/g/Techworker/nano/)
-[![PHP >= 5.4](http://img.shields.io/php/%3E=5.4.png?color=red)]
+[![PHP >= 5.4](http://img.shields.io/php/%3E=5.4.png?color=red)
 
 
 A code readability promoting, placeholder oriented, less defective sprintf functionality, inspired by https://github.com/trix/nano.
