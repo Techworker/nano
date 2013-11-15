@@ -291,30 +291,50 @@ class Nano
         throw new Exception(self::tpl("Key {key} not found", array('key' => $key)));
     }
 
-    private function _accessArray($value, $key)
+    /**
+     * Helper method to access an array value by key.
+     *
+     * @param array $arr The array to access.
+     * @param $key The name of the key to access.
+     * @return mixed
+     * @throws Exception
+     */
+    private function _accessArray(array $arr, $key)
     {
         if(is_numeric($key)) {
             $key = intval($key);
         }
 
-        if(isset($value[$key])) {
-            return $value[$key];
+        if(isset($arr[$key])) {
+            return $arr[$key];
         }
 
         throw new Exception(self::tpl("Key {key} not found", array('key' => $key)));
     }
 
-    private function _accessObject($value, $key)
+    /**
+     * Helper method to access an objects properties / getters, methods.
+     *
+     * @param object $value The object to access.
+     * @param string $key The name of the member, method, getter (get$key).
+     * @return mixed
+     * @throws Exception
+     */
+    private function _accessObject($object, $key)
     {
-        if(method_exists($value, $key)) {
-            return $value->{$key}();
-        }
-        if(method_exists($value, "get" . $key)) {
-            return $value->{"get" . $key}();
+        // check if the object has the given method
+        if(method_exists($object, $key)) {
+            return $object->{$key}();
         }
 
-        if(isset($value->{$key})) {
-            return $value->{$key};
+        // check if the object has a getter
+        if(method_exists($object, "get" . $key)) {
+            return $object->{"get" . $key}();
+        }
+
+        // check if the object has a member
+        if(isset($object->{$key})) {
+            return $object->{$key};
         }
 
         throw new Exception(self::tpl("Key {key} not found", array('key' => $key)));
